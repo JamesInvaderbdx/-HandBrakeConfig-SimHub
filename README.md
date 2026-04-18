@@ -2,6 +2,8 @@
 
 Plugin SimHub pour frein à main DIY. Supporte joystick HID et Arduino Nano (serial).
 
+[![Ko-Fi](https://img.shields.io/badge/Offrir%20un%20café-%23FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/eklid)
+
 ## Fonctionnalités
 - Mode HID joystick ou Arduino Nano (port série)
 - Calibration automatique
