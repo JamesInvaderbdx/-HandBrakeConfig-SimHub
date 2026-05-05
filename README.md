@@ -32,4 +32,4 @@ Plugin SimHub pour frein à main DIY. Supporte joystick HID et Arduino Nano (ser
 - Arduino Nano + KY-023 (mode serial uniquement)
 
 ## Crédits
-Développé par [eKLID](https://eklid.fr) — pixel art production
+Développé par [eKLID](https://euclide-production.fr) — eKliD PiXL production
