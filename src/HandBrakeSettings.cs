@@ -21,5 +21,6 @@ namespace HandBrakeConfig
         public uint      VJoyDeviceId  { get; set; } = 2;
         public uint      VJoyAxis      { get; set; } = 0x31; // Y par defaut
         public bool      Enabled       { get; set; } = true;
+        public int       SmoothN       { get; set; } = 8;
     }
 }

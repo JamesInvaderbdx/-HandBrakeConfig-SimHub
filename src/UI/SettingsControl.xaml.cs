@@ -71,6 +71,8 @@ namespace HandBrakeConfig.UI
             var s = _plugin.Settings;
             TbMin.Text      = s.RawMin.ToString();
             TbMax.Text      = s.RawMax.ToString();
+            SlSmooth.Value  = s.SmoothN;
+            TbSmoothVal.Text = s.SmoothN.ToString();
             SlDzLow.Value   = s.DeadzoneLow  * 100;
             SlDzHigh.Value  = s.DeadzoneHigh * 100;
             SlExpo.Value    = s.CurveExpo;
@@ -254,6 +256,14 @@ namespace HandBrakeConfig.UI
         }
 
         // ── Deadzone ──────────────────────────────────────────────────────────
+        void SlSmooth_Changed(object s, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (_loading) return;
+            _plugin.Settings.SmoothN = (int)SlSmooth.Value;
+            _plugin.ClearSmoothBuffer();
+            TbSmoothVal.Text = _plugin.Settings.SmoothN.ToString();
+        }
+
         void SlDzLow_Changed(object s, RoutedPropertyChangedEventArgs<double> e)
         {
             if (_loading) return;
@@ -306,6 +316,7 @@ namespace HandBrakeConfig.UI
                 _plugin.Settings.DeadzoneHigh = 0.02;
                 _plugin.Settings.Curve        = CurveType.Linear;
                 _plugin.Settings.CurveExpo    = 2.0;
+                _plugin.Settings.SmoothN      = 8;
                 _loading = true;
                 LoadFromSettings();
                 _loading = false;

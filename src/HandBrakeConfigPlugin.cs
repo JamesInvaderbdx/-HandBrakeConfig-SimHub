@@ -15,6 +15,8 @@ namespace HandBrakeConfig
 
         private double _rawNormalized;
         private double _output;
+        private readonly System.Collections.Generic.Queue<uint> _smoothBuf
+            = new System.Collections.Generic.Queue<uint>();
 
         public bool IsCalibrating { get; private set; }
         public uint CalMin        { get; private set; }
@@ -44,12 +46,24 @@ namespace HandBrakeConfig
             return axes[Settings.AxisIndex];
         }
 
+        private uint Smooth(uint raw)
+        {
+            int n = Math.Max(1, Settings.SmoothN);
+            _smoothBuf.Enqueue(raw);
+            while (_smoothBuf.Count > n) _smoothBuf.Dequeue();
+            uint sum = 0;
+            foreach (var v in _smoothBuf) sum += v;
+            return (uint)(sum / _smoothBuf.Count);
+        }
+
+        public void ClearSmoothBuffer() => _smoothBuf.Clear();
+
         public void DataUpdate(PluginManager pluginManager, ref GameData data)
         {
             if (!Settings.Enabled) return;
             uint? raw = GetRaw();
             if (raw == null) return;
-            uint r = raw.Value;
+            uint r = Smooth(raw.Value);
 
             if (IsCalibrating)
             {

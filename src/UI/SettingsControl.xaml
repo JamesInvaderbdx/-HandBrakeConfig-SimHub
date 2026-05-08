@@ -290,6 +290,26 @@
                 </StackPanel>
             </Border>
 
+            <!-- FILTERING -->
+            <TextBlock Text="// FILTERING" Style="{StaticResource SectionLabel}"/>
+            <Border Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="145"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="48"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="smooth (samples)" Style="{StaticResource Label}"/>
+                    <Slider    Grid.Column="1" x:Name="SlSmooth"
+                               Minimum="1" Maximum="32" SmallChange="1"
+                               IsSnapToTickEnabled="True" TickFrequency="1"
+                               ValueChanged="SlSmooth_Changed" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="2" x:Name="TbSmoothVal"
+                               Text="8" Foreground="#b44fd4" FontSize="13"
+                               HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
             <!-- DEAD ZONE -->
             <TextBlock Text="// DEAD ZONE" Style="{StaticResource SectionLabel}"/>
             <Border Style="{StaticResource Card}">
