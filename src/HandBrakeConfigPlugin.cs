@@ -18,9 +18,11 @@ namespace HandBrakeConfig
         private readonly System.Collections.Generic.Queue<uint> _smoothBuf
             = new System.Collections.Generic.Queue<uint>();
 
-        public bool IsCalibrating { get; private set; }
-        public uint CalMin        { get; private set; }
-        public uint CalMax        { get; private set; }
+        public bool   IsCalibrating   { get; private set; }
+        public uint   CalMin          { get; private set; }
+        public uint   CalMax          { get; private set; }
+        public double SmoothedOutput  => _output;
+        public double SmoothedRaw     => _rawNormalized;
 
         public void Init(PluginManager pluginManager)
         {

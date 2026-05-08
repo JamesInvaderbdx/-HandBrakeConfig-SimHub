@@ -31,36 +31,31 @@ namespace HandBrakeConfig.UI
         // ── Timer temps reel ─────────────────────────────────────────────────
         void Timer_Tick(object sender, EventArgs e)
         {
-            uint? rawNullable = _plugin.GetRaw();
-
             if (_plugin.Settings.InputMode == InputMode.Serial)
                 TbSerialStatus.Text = SerialReader.IsOpen ? "connected"
                     : string.IsNullOrEmpty(SerialReader.LastError) ? "no signal"
                     : "port busy";
             else
+            {
+                uint? rawNullable = _plugin.GetRaw();
                 TbAxisLive.Text = rawNullable.HasValue ? $"{rawNullable.Value} raw" : "---";
+            }
 
-            if (rawNullable == null) return;
-            uint raw = rawNullable.Value;
-
-            uint span = _plugin.Settings.RawMax - _plugin.Settings.RawMin;
-            double rawPct = span == 0 ? 0.0
-                : Math.Max(0.0, Math.Min(1.0, (double)(raw - _plugin.Settings.RawMin) / span));
-            double outVal = AxisProcessor.Process(raw, _plugin.Settings);
+            // Utilise les valeurs déjà lissées par le plugin
+            double rawPct = _plugin.SmoothedRaw;
+            double outVal = _plugin.SmoothedOutput;
 
             PbRaw.Value = rawPct * 100;
             PbOut.Value = outVal * 100;
             TbRaw.Text  = $"{rawPct * 100:F0}%";
             TbOut.Text  = $"{outVal * 100:F0}%";
 
-            // Couleur barre sortie
             PbOut.Foreground = outVal > 0.8
                 ? System.Windows.Media.Brushes.Crimson
                 : outVal > 0.4
                     ? System.Windows.Media.Brushes.Orange
                     : System.Windows.Media.Brushes.MediumSeaGreen;
 
-            // Statut calibration
             if (_plugin.IsCalibrating)
                 TbCalStatus.Text = $"  Cal en cours : {_plugin.CalMin} - {_plugin.CalMax}";
         }
