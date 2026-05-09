@@ -31,16 +31,15 @@ namespace HandBrakeConfig.UI
         // ── Timer temps reel ─────────────────────────────────────────────────
         void Timer_Tick(object sender, EventArgs e)
         {
+            uint? rawNullable = _plugin.GetRaw();
+
             if (_plugin.Settings.InputMode == InputMode.Serial)
                 TbSerialStatus.Text = SerialReader.IsOpen
                     ? (rawNullable.HasValue ? $"OK {rawNullable.Value}" : "OK ?")
                     : string.IsNullOrEmpty(SerialReader.LastError) ? "no signal"
                     : "port busy";
             else
-            {
-                uint? rawNullable = _plugin.GetRaw();
                 TbAxisLive.Text = rawNullable.HasValue ? $"{rawNullable.Value} raw" : "---";
-            }
 
             // Utilise les valeurs déjà lissées par le plugin
             double rawPct = _plugin.SmoothedRaw;
