@@ -239,6 +239,11 @@ namespace HandBrakeConfig.UI
                 _plugin.Settings.RawMin = vmin;
                 _plugin.Settings.RawMax = vmax;
             }
+            else
+            {
+                MessageBox.Show("Min doit être inférieur à Max et les deux doivent être des entiers valides.",
+                    "Calibration invalide", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         void BtnCal_Click(object s, RoutedEventArgs e)

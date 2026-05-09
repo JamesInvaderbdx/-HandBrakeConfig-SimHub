@@ -28,7 +28,10 @@ namespace HandBrakeConfig
             string path = $@"C:\Program Files\vJoy\{arch}\vJoyInterface.dll";
             IntPtr h = LoadLibrary(path);
             if (h == IntPtr.Zero)
+            {
                 LastError = $"Impossible de charger {path}";
+                return;
+            }
             _loaded = true;
         }
 
