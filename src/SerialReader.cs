@@ -11,7 +11,7 @@ namespace HandBrakeConfig
         public static bool IsOpen => _port != null && _port.IsOpen;
         public static string LastError { get; private set; } = "";
 
-        public static void Open(string portName, int baud = 9600)
+        public static void Open(string portName, int baud = 115200)
         {
             Close();
             LastError = "";
@@ -31,19 +31,14 @@ namespace HandBrakeConfig
 
         static void OnData(object s, SerialDataReceivedEventArgs e)
         {
-            try { Parse(_port.ReadLine().Trim()); } catch { }
+            try { Parse(_port.ReadLine()); } catch { }
         }
 
         static void Parse(string line)
         {
-            int xi = line.IndexOf("X:"), yi = line.IndexOf(" Y:");
-            if (xi < 0 || yi < 0) return;
-            int xEnd = line.IndexOf(' ', xi);
-            int yEnd = line.IndexOf(' ', yi + 1);
-            string xs = line.Substring(xi + 2, (xEnd < 0 ? line.Length : xEnd) - xi - 2);
-            string ys = line.Substring(yi + 3, (yEnd < 0 ? line.Length : yEnd) - yi - 3);
-            if (uint.TryParse(xs, out uint xv) && uint.TryParse(ys, out uint yv))
-                lock (_lock) { _x = xv * 65535u / 1023u; _y = yv * 65535u / 1023u; }
+            line = line.Trim('\r', '\n', ' ');
+            if (!uint.TryParse(line, out uint raw) || raw > 1023) return;
+            lock (_lock) { _x = raw * 65535u / 1023u; _y = 0; }
         }
 
         // retourne [X, Y] mis a l'echelle 0-65535

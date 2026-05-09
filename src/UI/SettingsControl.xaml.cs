@@ -32,7 +32,8 @@ namespace HandBrakeConfig.UI
         void Timer_Tick(object sender, EventArgs e)
         {
             if (_plugin.Settings.InputMode == InputMode.Serial)
-                TbSerialStatus.Text = SerialReader.IsOpen ? "connected"
+                TbSerialStatus.Text = SerialReader.IsOpen
+                    ? (rawNullable.HasValue ? $"OK {rawNullable.Value}" : "OK ?")
                     : string.IsNullOrEmpty(SerialReader.LastError) ? "no signal"
                     : "port busy";
             else
@@ -104,8 +105,6 @@ namespace HandBrakeConfig.UI
 
             // Serial
             RefreshSerialPorts();
-            int portIdx = Array.IndexOf(SerialPort.GetPortNames(), s.SerialPort);
-            if (portIdx >= 0) CbSerialPort.SelectedIndex = portIdx;
             if (s.SerialAxis == 1) RbSerialY.IsChecked = true;
             else                   RbSerialX.IsChecked = true;
 
@@ -159,17 +158,30 @@ namespace HandBrakeConfig.UI
         // ── Serial ────────────────────────────────────────────────────────────
         void RefreshSerialPorts()
         {
-            CbSerialPort.Items.Clear();
+            WpSerialPorts.Children.Clear();
             foreach (var p in SerialPort.GetPortNames())
-                CbSerialPort.Items.Add(p);
+            {
+                var rb = new RadioButton
+                {
+                    Content    = p,
+                    GroupName  = "SerialPort",
+                    IsChecked  = p == _plugin.Settings.SerialPort,
+                    Margin     = new System.Windows.Thickness(0, 0, 16, 0),
+                    Foreground = System.Windows.Media.Brushes.LightGray,
+                    FontFamily = new System.Windows.Media.FontFamily("Courier New"),
+                    FontSize   = 14
+                };
+                rb.Checked += SerialPortRb_Checked;
+                WpSerialPorts.Children.Add(rb);
+            }
         }
 
         void BtnSerialRefresh_Click(object s, RoutedEventArgs e) => RefreshSerialPorts();
 
-        void CbSerialPort_SelectionChanged(object s, SelectionChangedEventArgs e)
+        void SerialPortRb_Checked(object sender, RoutedEventArgs e)
         {
-            if (_loading || CbSerialPort.SelectedItem == null) return;
-            string port = CbSerialPort.SelectedItem.ToString();
+            if (_loading) return;
+            string port = ((RadioButton)sender).Content.ToString();
             _plugin.Settings.SerialPort = port;
             SerialReader.Open(port);
         }

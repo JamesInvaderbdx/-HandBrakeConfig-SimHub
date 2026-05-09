@@ -25,6 +25,7 @@ namespace HandBrakeConfig
             if (v <= low)        return 0.0;
             if (v >= 1.0 - high) return 1.0;
             double active = 1.0 - low - high;
+            if (active <= 0.0) return 0.0;
             return (v - low) / active;
         }
 
@@ -32,7 +33,9 @@ namespace HandBrakeConfig
         {
             switch (curve)
             {
-                case CurveType.Expo:   return Math.Pow(v, expo);
+                case CurveType.Expo:
+                    double e = Math.Max(0.1, expo);
+                    return Math.Max(0.0, Math.Min(1.0, Math.Pow(v, e)));
                 case CurveType.SCurve: return v * v * (3 - 2 * v);
                 default:               return v;
             }

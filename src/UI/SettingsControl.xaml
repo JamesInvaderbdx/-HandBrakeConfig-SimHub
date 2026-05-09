@@ -194,7 +194,7 @@
                         <RadioButton x:Name="RbHID"    Content="HID joystick"
                                      GroupName="InputMode" Margin="0,0,24,0"
                                      Checked="InputMode_Changed"/>
-                        <RadioButton x:Name="RbSerial" Content="Arduino Nano (serial)"
+                        <RadioButton x:Name="RbSerial" Content="Arduino (serial)"
                                      GroupName="InputMode"
                                      Checked="InputMode_Changed"/>
                     </StackPanel>
@@ -233,25 +233,25 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="60"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="85"/>
+                                <ColumnDefinition Width="60"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="38"/>
+                                <RowDefinition Height="Auto" MinHeight="38"/>
                                 <RowDefinition Height="8"/>
                                 <RowDefinition Height="38"/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="port" Style="{StaticResource Label}"/>
-                            <ComboBox  Grid.Row="0" Grid.Column="1" x:Name="CbSerialPort"
-                                       SelectionChanged="CbSerialPort_SelectionChanged"/>
-                            <Button    Grid.Row="0" Grid.Column="2" Content="refresh"
+                            <WrapPanel Grid.Row="0" Grid.Column="1" x:Name="WpSerialPorts"
+                                       Orientation="Horizontal" VerticalAlignment="Center"/>
+                            <Button    Grid.Row="0" Grid.Column="2" Content="scan"
                                        Style="{StaticResource SecondaryButton}"
                                        Margin="6,0,0,0" Click="BtnSerialRefresh_Click"/>
                             <TextBlock Grid.Row="2" Grid.Column="0" Text="axis" Style="{StaticResource Label}"/>
                             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                <RadioButton x:Name="RbSerialX" Content="X  (A1)"
+                                <RadioButton x:Name="RbSerialX" Content="X"
                                              GroupName="SerialAxis" Margin="0,0,20,0"
                                              Checked="SerialAxis_Changed"/>
-                                <RadioButton x:Name="RbSerialY" Content="Y  (A2)"
+                                <RadioButton x:Name="RbSerialY" Content="Y"
                                              GroupName="SerialAxis"
                                              Checked="SerialAxis_Changed"/>
                             </StackPanel>

@@ -62,7 +62,8 @@ namespace HandBrakeConfig
         public static void Write(double output, uint deviceId, uint axis)
         {
             if (_ownedDevice != deviceId) return;
-            try { SetAxis((int)(output * AXIS_MAX), deviceId, axis); } catch { }
+            int val = (int)Math.Max(0, Math.Min(AXIS_MAX, output * AXIS_MAX));
+            try { SetAxis(val, deviceId, axis); } catch { }
         }
     }
 }

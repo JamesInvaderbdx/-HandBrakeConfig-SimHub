@@ -4,7 +4,7 @@
 
 #include <Arduino.h>
 #define PIN_BRAKE A0   // A0 = axe X, A1 = axe Y — tester les deux
-#define INVERT    false  // true = inverse le sens si nécessaire
+#define INVERT    true  // true = inverse le sens si nécessaire
 #define SAMPLES   8
 
 static uint16_t buf[SAMPLES];
