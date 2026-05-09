@@ -134,6 +134,13 @@
                                    Foreground="#f0f0f0" Margin="0,0,0,4"/>
                         <TextBlock Text="calibration  //  dead zone  //  response curve"
                                    FontSize="12" Foreground="#4fc3f7" Margin="0,0,0,8"/>
+                        <TextBlock FontSize="12">
+                            <Hyperlink NavigateUri="https://ko-fi.com/eklid"
+                                       RequestNavigate="Hyperlink_Navigate"
+                                       Foreground="#e91e8c">
+                                buy me a coffee
+                            </Hyperlink>
+                        </TextBlock>
                     </StackPanel>
                     <Image Grid.Column="1"
                            Source="pack://application:,,,/HandBrakeConfig;component/handbrake_logo.png"
